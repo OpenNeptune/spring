@@ -1,9 +1,178 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+	 http://www.springframework.org/schema/beans/spring-beans.xsd
+	 http://www.springframework.org/schema/util
+	 http://www.springframework.org/schema/util/spring-util.xsd
+	 ">
 
 	<bean id="helloWorld" class="spring.javaSe.helloword.bean.HelloWorld">
 		<property name="name" value="Spring"></property>
 	</bean>
+	
+	<bean id="stu" class="SpringSE.AutoLoadBean.Student"/>
+	
+	<bean id="autoDemo" class="SpringSE.AutoLoadBean.annotationDemo">
+		<property name="per">
+			<ref bean="stu"/>
+		</property>
+	</bean>
+	
+	<!-- 构造函数 -->
+	<bean id="person1" class="SpringSE.constructor.PersonService"/>
+	
+	<bean id="person2" class="SpringSE.constructor.PersonService">
+		<constructor-arg>
+			<value>snake</value>
+		</constructor-arg>
+	</bean>
+	<bean id="person3" class="SpringSE.constructor.PersonService">
+		<constructor-arg value="snake" type="java.lang.String" index="0"/>
+		<constructor-arg value="22" type="int"/>
+		<constructor-arg value="snake" type="java.lang.String" index="1"/>
+	</bean>
+	
+	<!-- scope -->
+	<bean id="testScope" class="SpringSE.TestScope.TestScope" scope="prototype">
+		<property name="test"><value>this is test</value></property>
+	</bean>
+	
+
+	
+	<!-- 集合 -->
+	<bean id="listArraySetBean" class="SpringSE.collection.ListArraySet">
+		<property name="list">
+			<list>
+				<value>B</value>
+				<value>C</value>
+				<value>D</value>
+				<value>A</value>
+			</list>
+		</property>
+		<property name="array">
+			<array>
+				<value>1</value>
+				<value>2</value>
+				<value>3</value>
+				<value>4</value>
+			</array>
+		</property>
+		<property name="set">
+			<set>
+				<value>E</value>
+				<value>C</value>
+				<value>B</value>
+				<value>D</value>
+				<value>A</value>
+			</set>
+		</property>
+		<property name="listint">
+			<list>
+				<value>1</value>
+				<value>3</value>
+				<value>4</value>
+				<value>2</value>
+			</list>
+		</property>
+	</bean>	
+	
+	<bean id="test" class="SpringSE.collection.ListArraySet">
+		<property name="list">
+			<list>
+				<value>B</value>
+				<value>C</value>
+				<value>D</value>
+				<value>A</value>
+			</list>
+		</property>
+		<property name="array">
+			<array>
+				<value>1</value>
+				<value>2</value>
+				<value>3</value>
+				<value>4</value>
+			</array>
+		</property>
+		<property name="set">
+				<set value-type="java.util.Set" >
+					<value>B</value>
+					<value>C</value>
+					<value>D</value>
+					<value>A</value>
+				</set>
+		</property>
+		<property name="listint">
+			<list>
+				<value>1</value>
+				<value>3</value>
+				<value>4</value>
+				<value>2</value>
+			</list>
+		</property>
+	</bean>
+	
+	<!-- dependentCheck -->
+	<bean id="testdepentcheck" class="SpringSE.dependentcheck.simplecheck">
+		<property name="name" value="snake" />
+		<property name="age" value="20" />
+		<property name="sdf">
+			<bean class="java.text.SimpleDateFormat">
+				<constructor-arg value="yyyy-MM-dd" />
+			</bean>
+		</property>
+	</bean>
+	
+	<!-- extendBean -->
+	<bean id="base" abstract="true">
+		<property name="name" value="snake"/>
+		<property name="pass" value="123456"/>
+	</bean>
+	<bean id="child" class="SpringSE.extendBean.extendBean" parent="base"/>
+	
+	<!-- refBean -->
+	<bean id="sdf2" class="java.text.SimpleDateFormat">
+		<constructor-arg value="yyyy-MM-dd HH:mm:ss"/>
+	</bean>
+	
+	<bean id="year" class="SpringSE.refbean.TestRef">
+		<property name="patter">
+			<bean class="java.lang.String">
+				<constructor-arg value="yyyy-MM-dd"/>
+			</bean>
+		</property>
+		<property name="sdf2">
+			<ref bean="sdf2"/>
+		</property>
+	</bean>
+	<bean id="time" class="SpringSE.refbean.TestRef">
+		<property name="patter">
+			<bean class="java.lang.String">
+				<constructor-arg value="HH:mm:ss"/>
+			</bean>
+		</property>
+				<property name="sdf2">
+			<ref bean="sdf2"/>
+		</property>
+	</bean>
+	
+	<!-- 数据库 -->
+	<!-- 
+	<bean id="OracleDataSource"
+		class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close">
+		<property name="driverClassName">
+			<value>oracle.jdbc.driver.OracleDriver</value>
+		</property>
+		<property name="url">
+			<value>jdbc:oracle:thin:@127.0.0.1:1521:ORCL</value>
+		</property>
+		<property name="username">
+			<value>scott</value>
+		</property>
+		<property name="password">
+			<value>tiger</value>
+		</property>
+	</bean>
+	 -->
 </beans>
