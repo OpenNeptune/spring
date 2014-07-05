@@ -3,22 +3,24 @@ package spring.javaSe.helloword.test;
 
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
 
+import SpringSE.Context;
 import spring.javaSe.helloword.bean.HelloWorld;
 
 public class Test_HelloWorld {
 
-	@SuppressWarnings("resource")
 	@Test
 	public void say(){
-		//此时为了方便做单元测试，故使用FileSystemXmlApplicationContext-获取配置文件的路径
-		ApplicationContext ctx = new FileSystemXmlApplicationContext(
-				"WebContent/WEB-INF/conf/applicationContext-javasebeantest.xml");
+		ApplicationContext ctx = Context.getAppContext();
 		
 		HelloWorld helloWorld = (HelloWorld) ctx.getBean("helloWorld");
-		
 		helloWorld.say();
+		
+		
+		//直接通过类型获取。注意输入改类型有多个bean实例走报错
+		HelloWorld helloWorld2 = ctx.getBean(HelloWorld.class);
+		helloWorld2.say();
+		
 
 	}
 }
