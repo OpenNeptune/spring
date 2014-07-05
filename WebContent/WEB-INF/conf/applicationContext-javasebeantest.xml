@@ -1,22 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans
-	 http://www.springframework.org/schema/beans/spring-beans.xsd
-	 http://www.springframework.org/schema/util
-	 http://www.springframework.org/schema/util/spring-util.xsd
-	 ">
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
 	<bean id="helloWorld" class="spring.javaSe.helloword.bean.HelloWorld">
 		<property name="name" value="Spring"></property>
-	</bean>
-	
-	<bean id="stu" class="SpringSE.AutoLoadBean.Student"/>
-	
-	<bean id="autoDemo" class="SpringSE.AutoLoadBean.annotationDemo">
-		<property name="per">
-			<ref bean="stu"/>
-		</property>
 	</bean>
 	
 	<!-- 构造函数 -->
@@ -32,14 +23,27 @@
 		<constructor-arg value="22" type="int"/>
 		<constructor-arg value="snake" type="java.lang.String" index="1"/>
 	</bean>
-	
-	<!-- scope -->
-	<bean id="testScope" class="SpringSE.TestScope.TestScope" scope="prototype">
-		<property name="test"><value>this is test</value></property>
+	<!-- 特殊字符可以使用CDATA包括 -->
+	<bean id="person4" class="SpringSE.constructor.PersonService">
+		<constructor-arg>
+			<value>
+				<![CDATA[<snakeSS>]]>
+			</value>
+		</constructor-arg>
 	</bean>
-	
-
-	
+	<!-- 为级联属性赋值 -->
+	<bean id="person" class="SpringSE.constructor.Person"></bean>
+	<bean id="person5" class="SpringSE.constructor.PersonBean">
+		<property name="name">
+			<value>spring</value>
+		</property>
+		<property name="person">
+			<ref bean="person"/>
+		</property>
+		<!-- 为级联属性赋值 -->
+		<property name="person.id" value="1000"></property>
+		<property name="person.name" value="springs"></property>
+	</bean>
 	<!-- 集合 -->
 	<bean id="listArraySetBean" class="SpringSE.collection.ListArraySet">
 		<property name="list">
@@ -111,19 +115,71 @@
 			</list>
 		</property>
 	</bean>
-	
-	<!-- dependentCheck -->
-	<bean id="testdepentcheck" class="SpringSE.dependentcheck.simplecheck">
-		<property name="name" value="snake" />
-		<property name="age" value="20" />
-		<property name="sdf">
-			<bean class="java.text.SimpleDateFormat">
-				<constructor-arg value="yyyy-MM-dd" />
-			</bean>
+	<!-- 注入Map -->
+	<bean id="testVo" class="SpringSE.collection.TestVO">
+		<property name="id" value="11"></property>
+		<property name="name" value="spring"></property>
+	</bean>
+	<bean id="testMap" class="SpringSE.collection.MapBean">
+		<property name="testMap">
+			<map>
+				<entry key="11" value-ref="testVo"></entry>
+				<entry key="22" value-ref="testVo"></entry>
+				<entry key="33" value-ref="testVo"></entry>
+			</map>
 		</property>
 	</bean>
 	
+	<!-- 配置properites -->
+	<bean id="propertiesBean" class="SpringSE.collection.PropertiesBean">
+		<property name="properties">
+			<props>
+				<prop key="user">root</prop>
+				<prop key="pass">root</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- 使用uitl配置独立的集合 -->
+	<util:map id="uitlMap">
+		<entry key="99" value-ref="testVo"></entry>
+		<entry key="88" value-ref="testVo"></entry>
+		<entry key="77" value-ref="testVo"></entry>
+		<entry key="66" value-ref="testVo"></entry>
+	</util:map>
+	<!-- 使用util:map -->
+	<bean id="testMap1" class="SpringSE.collection.MapBean">
+		<property name="testMap">
+			<ref bean="uitlMap"/>
+		</property>
+	</bean>
+	<!-- 使用p命名空间便捷的配置属性 -->
+	<bean id="testMap2" class="SpringSE.collection.MapBean" p:testMap-ref="uitlMap"></bean>
+	
+	
+	
+	<!-- 自动加载 -->
+	<bean id="stu" class="SpringSE.AutoLoadBean.Student"/>
+	<!-- 通过指定autowire属性完成自动转配 -->
+	<bean id="autoDemo" class="SpringSE.AutoLoadBean.annotationDemo" autowire="byType">
+	<!--  
+		<property name="per">
+			<ref bean="stu"/>
+		</property>
+	-->
+	</bean>
+	
+	<!-- dependentCheck -->
+	<bean id="sdf" class="java.text.SimpleDateFormat">
+		<constructor-arg value="yyyy-MM-dd" />
+	</bean>
+	<!-- 通过 depends-on="sdf"指定在实例化该bean是必需依赖于sdf这个bean-->
+	<bean id="testdepentcheck" class="SpringSE.dependentcheck.simplecheck" depends-on="sdf" autowire="byName">
+		<property name="name" value="snake" />
+		<property name="age" value="20" />
+	</bean>
 	<!-- extendBean -->
+	<!-- 如果为bean设置abstract=true 则以为着定义了一个抽象bean，不能是实例化 -->
 	<bean id="base" abstract="true">
 		<property name="name" value="snake"/>
 		<property name="pass" value="123456"/>
@@ -156,6 +212,16 @@
 		</property>
 	</bean>
 	
+	
+	<!-- scope -->
+	<!-- 未指定scope属性 -->
+	<bean id="testScope" class="SpringSE.TestScope.TestScope">
+		<property name="test"><value>this is test</value></property>
+	</bean>
+	<!-- 指定scope属性 -->
+	<bean id="testScope1" class="SpringSE.TestScope.TestScope" scope="prototype">
+		<property name="test"><value>this is test</value></property>
+	</bean>
 	<!-- 数据库 -->
 	<!-- 
 	<bean id="OracleDataSource"
@@ -175,4 +241,7 @@
 		</property>
 	</bean>
 	 -->
+	 
+	 
+	 
 </beans>

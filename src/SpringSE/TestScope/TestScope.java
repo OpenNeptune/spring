@@ -17,12 +17,14 @@ public class TestScope {
 	}
 
 	public static void main(String[] args){
+		
 		ApplicationContext ctx = Context.getAppContext();
 		
 		for(int i=0;i<5;i++){
 			TestScope test = (TestScope) ctx.getBean("testScope");
-			
-			System.out.println(test);	
+			TestScope test1 = (TestScope) ctx.getBean("testScope1");
+			//观察输出对象的hash
+			System.out.println(test +"\t" + test1);	
 		}
 
 		

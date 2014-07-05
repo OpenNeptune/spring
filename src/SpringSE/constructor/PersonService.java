@@ -42,10 +42,11 @@ public class PersonService {
 		PersonService test =(PersonService) ctx.getBean("person1");
 		PersonService test1 =(PersonService) ctx.getBean("person2");
 		PersonService test2 =(PersonService) ctx.getBean("person3");
-		
+		PersonService test3 =(PersonService) ctx.getBean("person4");
 		test.info();
 		test1.info();
 		test2.info();
+		test3.info();
 	
 	}
 
