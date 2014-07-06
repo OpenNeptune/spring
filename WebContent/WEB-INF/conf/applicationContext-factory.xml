@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 
+		利用工厂模式配置Bean
+	 -->
+	
+	<!-- 静态工厂Bean -->
+	<!-- 所谓的静态工厂配置bean就是调用工厂的静态方法，返回一个实例，然后注入到bean中 -->
+	
+	<!-- 
+		class:静态工厂类的全类名
+		fatory-method:获取想要对象的静态方法名
+	 -->
+	<bean id="staticFactoryBean" class="SpringSE.factory.StaticProductFactory" factory-method="getProductByName">
+		<constructor-arg name="name" value="RIDF"></constructor-arg>
+	</bean>
+	
+	<!-- 动态工厂Bean -->
+	<!-- 先配置工厂bean获得工厂的实例 -->
+	<bean id="prodcutFacotry" class="SpringSE.factory.InstanceProductFactory"></bean>
+	
+	<bean id="instanceProduct" factory-bean="prodcutFacotry" factory-method="getProductByName">
+		<constructor-arg  value="RIDF"></constructor-arg>
+	</bean>
+	
+	<!-- 通过FactoryBean配置bean（factoryBean是spring提供的） -->
+	<bean id="factoryBeanProduct" class="SpringSE.factory.ProductFactoryBean"></bean>
+</beans>

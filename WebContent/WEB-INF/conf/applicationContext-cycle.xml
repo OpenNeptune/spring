@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 
+		测试Bean的声明周期
+	 -->
+	<bean id="Demo01" class="SpringSE.cycle.Demo01" init-method="init" destroy-method="destroy">
+		<property name="id" value="#{T(java.lang.System).currentTimeMillis()}"></property>
+	</bean>
+	
+	
+	<!-- bean后置处理器 -->
+	<bean class="SpringSE.cycle.MyBeanProcessor"></bean>
+</beans>

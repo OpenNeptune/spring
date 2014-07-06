@@ -7,7 +7,6 @@
 
 	<!-- 通过context指定外部引用的属性文件 -->
 	<context:property-placeholder location="classpath:db.properties"/>
-	
 	<bean id="db" class="SpringSE.includeProperties.includeProperites">
 		<property name="user" value="${db.user}"></property>
 		<property name="pass" value="${db.pass}"></property>

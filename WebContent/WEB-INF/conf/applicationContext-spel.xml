@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 
+		测试SpEL
+	
+	 -->
+	
+	
+	
+	<!-- 字面量测试 -->
+	<bean  id="constant" class="SpringSE.SpEL.constantBeanTest">
+		<property name="id" value="#{5}"></property>
+		<property name="productName" value="#{'computer'}"></property>
+		<property name="price" value="#{10000.00}"></property>
+		<property name="productNum" value="#{1.001e4}"></property>
+		<property name="isNeeds" value="#{true}"></property>
+	</bean>
+	
+	<!-- 利用spel引用另一个Bean,调用bean的属性和方法 -->
+	<bean  id="customer" class="SpringSE.SpEL.Customer">
+		<!-- 此处调用静态方法为id赋值 -->
+		<property name="id" value="#{T(java.lang.System).currentTimeMillis()}"></property>
+		<property name="name" value="customer's name"></property>
+	</bean>
+	
+	<bean id="spelRefBean" class="SpringSE.SpEL.SpELRefBean">
+		<!-- 使用spel引用一个已经存在的Bean -->
+		<property name="customer" value="#{customer}"></property>
+		<property name="injectId" value="#{customer.id}"></property>
+		<property name="injectName" value="#{customer.name}"></property>
+		<property name="injectInfo" value="#{customer.getInfo()}"></property>
+	</bean>
+</beans>
