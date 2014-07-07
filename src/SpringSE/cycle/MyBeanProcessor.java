@@ -2,9 +2,6 @@ package SpringSE.cycle;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 public class MyBeanProcessor implements BeanPostProcessor {
 	
